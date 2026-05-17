@@ -18,7 +18,7 @@ import {
   Shield,
   BarChart3,
 } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+
 import ShaderDemo from "./ShaderDemo";
 
 const FEATURES = [
@@ -74,12 +74,10 @@ const cardVariants = {
 };
 
 export default function Features() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   return (
     <section
       style={{
-        background: isDark ? "#0a0a0a" : "#f8f8f8",
+        background: "#0a0a0a",
         padding: "100px 1.5rem 120px",
         position: "relative",
       }}
@@ -119,7 +117,7 @@ export default function Features() {
               fontSize: "clamp(2rem, 5vw, 3.25rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.04em",
-              color: isDark ? "#ffffff" : "#0a0a0a",
+              color: "#ffffff",
               maxWidth: "520px",
             }}
           >
@@ -207,7 +205,7 @@ export default function Features() {
                       fontFamily: "'Geist', 'Inter', sans-serif",
                       fontWeight: 700,
                       fontSize: "16px",
-                      color: isDark ? "#ffffff" : "#0a0a0a",
+                      color: "#ffffff",
                       letterSpacing: "-0.025em",
                       marginBottom: "8px",
                     }}
@@ -220,7 +218,7 @@ export default function Features() {
                       fontWeight: 400,
                       fontSize: "14px",
                       lineHeight: 1.65,
-                      color: isDark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.55)",
+                      color: "rgba(255,255,255,0.45)",
                       letterSpacing: "-0.005em",
                     }}
                   >

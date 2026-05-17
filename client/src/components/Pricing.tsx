@@ -6,7 +6,7 @@
 
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+
 
 const pricingTiers = [
   {
@@ -61,8 +61,6 @@ const pricingTiers = [
 ];
 
 export default function Pricing() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
@@ -114,7 +112,7 @@ export default function Pricing() {
               fontSize: "clamp(2rem, 5vw, 3.25rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.04em",
-              color: isDark ? "#ffffff" : "#0a0a0a",
+              color: "#ffffff",
               maxWidth: "600px",
               margin: "0 auto",
             }}
@@ -137,7 +135,7 @@ export default function Pricing() {
               fontFamily: "'Inter', sans-serif",
               fontSize: "1.0625rem",
               lineHeight: 1.6,
-              color: isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
+              color: "rgba(255,255,255,0.7)",
               maxWidth: "600px",
               margin: "16px auto 0",
             }}
@@ -165,20 +163,12 @@ export default function Pricing() {
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
               style={{
-                background: isDark
-                  ? tier.highlighted
-                    ? "linear-gradient(145deg, rgba(251,146,60,0.1) 0%, rgba(56,189,248,0.05) 100%)"
-                    : "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)"
-                  : tier.highlighted
-                    ? "linear-gradient(145deg, rgba(251,146,60,0.08) 0%, rgba(56,189,248,0.04) 100%)"
-                    : "linear-gradient(145deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.01) 100%)",
-                border: isDark
-                  ? tier.highlighted
-                    ? "2px solid rgba(251,146,60,0.3)"
-                    : "1px solid rgba(255,255,255,0.07)"
-                  : tier.highlighted
-                    ? "2px solid rgba(251,146,60,0.4)"
-                    : "1px solid rgba(0,0,0,0.1)",
+                background: tier.highlighted
+                  ? "linear-gradient(145deg, rgba(251,146,60,0.1) 0%, rgba(56,189,248,0.05) 100%)"
+                  : "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+                border: tier.highlighted
+                  ? "2px solid rgba(251,146,60,0.3)"
+                  : "1px solid rgba(255,255,255,0.07)",
                 borderRadius: "16px",
                 padding: "32px",
                 display: "flex",
@@ -191,18 +181,14 @@ export default function Pricing() {
                 el.style.transform = "translateY(-4px)";
                 el.style.borderColor = tier.highlighted
                   ? "rgba(251,146,60,0.5)"
-                  : isDark
-                    ? "rgba(255,255,255,0.15)"
-                    : "rgba(0,0,0,0.15)";
+                  : "rgba(255,255,255,0.15)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.transform = "translateY(0)";
                 el.style.borderColor = tier.highlighted
                   ? "rgba(251,146,60,0.3)"
-                  : isDark
-                    ? "rgba(255,255,255,0.07)"
-                    : "rgba(0,0,0,0.1)";
+                  : "rgba(255,255,255,0.07)";
               }}
             >
               {tier.highlighted && (
@@ -231,7 +217,7 @@ export default function Pricing() {
                   fontFamily: "'Geist', 'Inter', sans-serif",
                   fontSize: "1.5rem",
                   fontWeight: 700,
-                  color: isDark ? "#ffffff" : "#0a0a0a",
+                  color: "#ffffff",
                   margin: "0 0 8px 0",
                 }}
               >
@@ -242,7 +228,7 @@ export default function Pricing() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "0.875rem",
-                  color: isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.55)",
+                  color: "rgba(255,255,255,0.55)",
                   margin: "0 0 24px 0",
                 }}
               >
@@ -262,7 +248,7 @@ export default function Pricing() {
                       fontFamily: "'Geist', 'Inter', sans-serif",
                       fontSize: "2.5rem",
                       fontWeight: 700,
-                      color: isDark ? "#ffffff" : "#0a0a0a",
+                      color: "#ffffff",
                     }}
                   >
                     {tier.price}
@@ -271,7 +257,7 @@ export default function Pricing() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.875rem",
-                      color: isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.55)",
+                      color: "rgba(255,255,255,0.55)",
                     }}
                   >
                     {tier.period}

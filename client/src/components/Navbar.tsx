@@ -8,12 +8,8 @@
 
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
-import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Navbar() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   return (
     <motion.nav
       className="glass-nav"
@@ -24,10 +20,10 @@ export default function Navbar() {
         right: 0,
         zIndex: 50,
         height: "60px",
-        background: isDark ? "rgba(10, 10, 10, 0.5)" : "rgba(255, 255, 255, 0.5)",
+        background: "rgba(10, 10, 10, 0.5)",
         backdropFilter: "blur(16px) saturate(180%)",
         WebkitBackdropFilter: "blur(16px) saturate(180%)",
-        borderBottom: isDark ? "1px solid rgba(255, 255, 255, 0.06)" : "1px solid rgba(0, 0, 0, 0.08)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
       }}
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
@@ -65,7 +61,7 @@ export default function Navbar() {
               fontFamily: "'Geist', 'Inter', sans-serif",
               fontWeight: 700,
               fontSize: "15px",
-              color: isDark ? "#ffffff" : "#0a0a0a",
+              color: "#ffffff",
               letterSpacing: "-0.03em",
             }}
           >
@@ -94,7 +90,7 @@ export default function Navbar() {
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 400,
                 fontSize: "14px",
-                color: isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.55)",
+                color: "rgba(255,255,255,0.55)",
                 textDecoration: "none",
                 transition: "color 160ms ease",
                 letterSpacing: "-0.01em",
@@ -107,10 +103,10 @@ export default function Navbar() {
                 }
               }}
               onMouseEnter={(e) => {
-                (e.target as HTMLAnchorElement).style.color = isDark ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.9)";
+                (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)";
               }}
               onMouseLeave={(e) => {
-                (e.target as HTMLAnchorElement).style.color = isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.55)";
+                (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)";
               }}
             >
               {item.label}
@@ -120,8 +116,6 @@ export default function Navbar() {
 
         {/* Right actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <ThemeToggle />
-
           <button
             className="btn-orange-glow"
             style={{
