@@ -173,9 +173,11 @@ export default function Features() {
                     marginBottom: "8px",
                     borderRadius: "12px 12px 0 0",
                     overflow: "hidden",
+                    width: "calc(100% + 40px)",
+                    height: "140px",
                   }}
                 >
-                  <ShaderDemo type={feature.shaderType} width={280} height={120} />
+                  <ShaderDemo type={feature.shaderType} />
                 </div>
 
                 {/* Icon container */}

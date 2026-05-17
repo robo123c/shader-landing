@@ -10,6 +10,12 @@
  * - "typescript": Type-safe gradient with labeled uniforms
  * - "zero-deps": Minimal geometry with clean wireframe
  * - "profiler": Heat-map style visualization
+ *
+ * Features:
+ * - Responsive sizing with ResizeObserver
+ * - Visibility-based rendering throttling (IntersectionObserver)
+ * - Proper cleanup and memory management
+ * - Optimized WebGL settings for small canvases
  */
 
 import { useEffect, useRef } from "react";
@@ -36,12 +42,16 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
     uniforms?: any;
     animationId: number;
     mesh?: THREE.Mesh;
+    geometry?: THREE.PlaneGeometry;
+    material?: THREE.ShaderMaterial;
   } | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
+    let isVisible = true;
+    let animationId = 0;
 
     // Initialize Three.js
     const camera = new THREE.Camera();
@@ -203,32 +213,46 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
 
     // Optimize for small canvases
     const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       antialias: false,
       alpha: false,
       powerPreference: "high-performance",
-      precision: "lowp"
+      precision: "lowp",
     });
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height);
 
     container.appendChild(renderer.domElement);
 
-    // Animation loop with visibility-based throttling
-    let animationId = 0;
-    let isVisible = true;
-    
-    const observer = new IntersectionObserver(
+    // Visibility-based rendering throttling
+    const visibilityObserver = new IntersectionObserver(
       (entries) => {
         isVisible = entries[0].isIntersecting;
       },
       { threshold: 0.1 }
     );
-    observer.observe(container);
-    
+    visibilityObserver.observe(container);
+
+    // Responsive sizing with ResizeObserver
+    const resizeObserver = new ResizeObserver(() => {
+      if (!container.parentElement) return;
+
+      const rect = container.getBoundingClientRect();
+      const newWidth = Math.max(rect.width, 1);
+      const newHeight = Math.max(rect.height, 1);
+
+      if (newWidth > 0 && newHeight > 0) {
+        renderer.setSize(newWidth, newHeight);
+        uniforms.resolution.value.x = renderer.domElement.width;
+        uniforms.resolution.value.y = renderer.domElement.height;
+      }
+    });
+    resizeObserver.observe(container);
+
+    // Animation loop with visibility-based throttling
     const animate = () => {
       animationId = requestAnimationFrame(animate);
-      
+
       if (isVisible) {
         uniforms.time.value += 0.016;
         renderer.render(scene, camera);
@@ -242,6 +266,8 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
       uniforms,
       animationId: 0,
       mesh,
+      geometry,
+      material,
     };
 
     animate();
@@ -249,7 +275,8 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
-      observer.disconnect();
+      visibilityObserver.disconnect();
+      resizeObserver.disconnect();
 
       if (sceneRef.current && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
@@ -265,8 +292,8 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
     <div
       ref={containerRef}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width: "100%",
+        height: "100%",
         borderRadius: "8px",
         overflow: "hidden",
         background: "#000",
