@@ -8,8 +8,11 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function ShaderCanvas() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
     camera: THREE.Camera;
@@ -93,6 +96,10 @@ export default function ShaderCanvas() {
 
     container.appendChild(renderer.domElement);
 
+    // Apply background color based on theme
+    const bgColor = isDark ? 0x0a0a0a : 0xf8f8f8;
+    renderer.setClearColor(bgColor);
+
     // Handle window resize
     const onWindowResize = () => {
       const width = container.clientWidth;
@@ -162,7 +169,7 @@ export default function ShaderCanvas() {
         inset: 0,
         width: "100%",
         height: "100%",
-        background: "#0a0a0a",
+        background: isDark ? "#0a0a0a" : "#f8f8f8",
         overflow: "hidden",
         zIndex: 0,
       }}

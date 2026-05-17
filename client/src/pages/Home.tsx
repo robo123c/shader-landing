@@ -22,7 +22,7 @@ export default function Home() {
     <div
       style={{
         minHeight: "100vh",
-        background: "#0a0a0a",
+        background: "var(--background)",
         overflowX: "hidden",
       }}
     >
