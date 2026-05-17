@@ -81,8 +81,15 @@ export default function ShaderCanvas() {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Optimize pixel ratio for performance
+    const pixelRatio = Math.min(window.devicePixelRatio, 2);
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: false,
+      alpha: false,
+      powerPreference: "high-performance",
+      precision: "mediump"
+    });
+    renderer.setPixelRatio(pixelRatio);
 
     container.appendChild(renderer.domElement);
 
@@ -99,13 +106,23 @@ export default function ShaderCanvas() {
     onWindowResize();
     window.addEventListener("resize", onWindowResize, false);
 
-    // Animation loop
+    // Animation loop with frame rate throttling
     let animationId = 0;
-    const animate = () => {
+    let lastFrameTime = 0;
+    const targetFrameTime = 1000 / 60; // 60 FPS target
+    
+    const animate = (currentTime: number) => {
       animationId = requestAnimationFrame(animate);
-      uniforms.time.value += 0.05;
-      renderer.render(scene, camera);
+      
+      // Throttle to 60 FPS
+      if (currentTime - lastFrameTime >= targetFrameTime) {
+        uniforms.time.value += 0.016;
+        renderer.render(scene, camera);
+        lastFrameTime = currentTime;
+      }
     };
+    
+    animate(0);
 
     // Store scene references for cleanup
     sceneRef.current = {
@@ -117,7 +134,7 @@ export default function ShaderCanvas() {
     };
 
     // Start animation
-    animate();
+    animate(performance.now());
 
     // Cleanup function
     return () => {

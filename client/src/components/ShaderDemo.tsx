@@ -201,18 +201,38 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Optimize for small canvases
+    const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: false,
+      alpha: false,
+      powerPreference: "high-performance",
+      precision: "lowp"
+    });
+    renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height);
 
     container.appendChild(renderer.domElement);
 
-    // Animation loop
+    // Animation loop with visibility-based throttling
     let animationId = 0;
+    let isVisible = true;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0].isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(container);
+    
     const animate = () => {
       animationId = requestAnimationFrame(animate);
-      uniforms.time.value += 0.016; // ~60fps
-      renderer.render(scene, camera);
+      
+      if (isVisible) {
+        uniforms.time.value += 0.016;
+        renderer.render(scene, camera);
+      }
     };
 
     sceneRef.current = {
@@ -229,6 +249,7 @@ export default function ShaderDemo({ type, width = 280, height = 160 }: ShaderDe
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
+      observer.disconnect();
 
       if (sceneRef.current && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);

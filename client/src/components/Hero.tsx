@@ -9,7 +9,9 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Github } from "lucide-react";
-import ShaderCanvas from "./ShaderCanvas";
+import { lazy, Suspense } from "react";
+
+const ShaderCanvas = lazy(() => import("./ShaderCanvas"));
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -39,7 +41,9 @@ export default function Hero() {
       }}
     >
       {/* Three.js shader animation background */}
-      <ShaderCanvas />
+      <Suspense fallback={null}>
+        <ShaderCanvas />
+      </Suspense>
 
       {/* Overlay vignette to focus center */}
       <div
