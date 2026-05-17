@@ -1,0 +1,35 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [],
+  "dev_command": "pnpm run dev",
+  "env_vars": {},
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663668785725/EMbFMDeTriHwYTboJrWF4j",
+    "access_key_id": "ASIAZV3A2ECZH5BGC3KW",
+    "secret_access_key": "xlBPmP2fuCYKj8RzBEhf45gEnNy4cvlpezRT5aXn",
+    "session_token": "IQoJb3JpZ2luX2VjEN///////////wEaCXVzLWVhc3QtMSJHMEUCIBzrpNfm9jCDEHCQROI2ucZDXOKbcpVK48CnXo9vaxafAiEAuvWB4jYPsV6Joo7Lch9oDrCRWCQTLKZzgZqh3MN5yT4q/wMIp///////////ARAEGgw2NjUzODYwOTg4NjYiDItZBgxcInkcG1N90irTA9bXxT7eMLW151BB8QwgBy8VfPUWRCcuvLDg/v9v4nCK6whKep7wUVwuldUBKDIC4ENhqI9CBQAiPDBxnhFCxOLWCHzXVwdWO6/Vcq892BEN8BwDIZmL+t1j8trjx9A46wfj8aVp7TVKQvIXdfz6yy2lw39KOmuVBkm3oPWa+c/RTSxa4O8dkUCBhMryRd7SAmjr8lBDgx+6yrHkTPJwRiMJ/HGks6GBIsXTNzr1UReG0S8HX7eiFmBugYdsDhtdlaxFxcJdB3HstOLfZQRO5iV3mTs9B8xYH9X5Gt4Vvk6uGfCtafUvTHAWu6BJ8D0FESPkrzrh4H0ty+ANTa7P9VCQM2GXHQft8nLo7J6RiSqYvv9Vr5pI4jJu1bosRleIcWJO4/Z+jlwjScAxFaGSemwABaIDlG9OhLmoEvp3VoHCzy6Xt4S8lXWOB8wSt8PbDlHDY4BQh7GbPzOP0vE+2U7FOZh3pZdgJfq1iP+T6wdLoBIof1gkE/uZvrBQ9FDqKTlPUPX292vHYVZU4q69d/uHOKslJhzVXsuLikomulMMJ+UeQUpk8ytMUE9Zcza8XFk1RQUYL3K/BFRKK6kzmYugkbeCuQ/xW0IbK9+Hm1a+L9nnMMmdp9AGOp0BQOGmaj7qcZjFjMLOAUN9VLNQXLkR6S9tqzORkTdq3lG1kyu5WUSLm4HnVFgJdTgnK6a4Fok48++Icv4z6RkAPGhygx16eek63YYhr11zMpiwUQdBOYuMmgaaVYexkoX1NtOjouJEOBdZuiVEoghm1Auo15sUeBu5opDL3B04scDwI0cJsDt9S9455zycSthQLVIZNVNA5C6vyRrzjA==",
+    "expiration": "2026-05-18T02:20:57.000Z"
+  },
+  "name": "shader-landing",
+  "path": "/home/ubuntu/shader-landing",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "AWsXboRGxkaPaikz57bu2R",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "YVwB2XkovMgWkWJCJsRhz2",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "rudra ghosal",
+    "OWNER_OPEN_ID": "PRg3B9NUjmHjcJzFw6FJEC",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "dc654544-505f-41af-80fb-66b810c41a04",
+    "VITE_APP_ID": "EMbFMDeTriHwYTboJrWF4j",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "Shader Animation — High-End Tech Landing Page",
+    "VITE_FRONTEND_FORGE_API_KEY": "JzSKzCtrZMMLrwNG9u2R4H",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}
