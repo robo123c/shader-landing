@@ -8,6 +8,7 @@
 
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   return (
@@ -74,10 +75,14 @@ export default function Navbar() {
           }}
           className="hidden md:flex"
         >
-          {["Docs", "Examples", "Pricing", "Blog"].map((item) => (
+          {[
+            { label: "Features", href: "#features" },
+            { label: "Pricing", href: "#pricing" },
+            { label: "Testimonials", href: "#testimonials" },
+          ].map((item) => (
             <a
-              key={item}
-              href="#"
+              key={item.label}
+              href={item.href}
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 400,
@@ -87,6 +92,13 @@ export default function Navbar() {
                 transition: "color 160ms ease",
                 letterSpacing: "-0.01em",
               }}
+              onClick={(e) => {
+                e.preventDefault();
+                const target = document.querySelector(item.href);
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               onMouseEnter={(e) => {
                 (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)";
               }}
@@ -94,34 +106,15 @@ export default function Navbar() {
                 (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)";
               }}
             >
-              {item}
+              {item.label}
             </a>
           ))}
         </div>
 
         {/* Right actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <a
-            href="#"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 400,
-              fontSize: "14px",
-              color: "rgba(255,255,255,0.55)",
-              textDecoration: "none",
-              transition: "color 160ms ease",
-              letterSpacing: "-0.01em",
-            }}
-            className="hidden sm:block"
-            onMouseEnter={(e) => {
-              (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)";
-            }}
-          >
-            Sign in
-          </a>
+          <ThemeToggle />
+
           <button
             className="btn-orange-glow"
             style={{

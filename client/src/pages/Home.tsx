@@ -12,6 +12,10 @@ import Features from "@/components/Features";
 import CodePreview from "@/components/CodePreview";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
+import ShaderPlayground from "@/components/ShaderPlayground";
+import Testimonials from "@/components/Testimonials";
+import Pricing from "@/components/Pricing";
+import Newsletter from "@/components/Newsletter";
 
 export default function Home() {
   return (
@@ -25,8 +29,18 @@ export default function Home() {
       <Navbar />
       <Hero />
       <TrustBar />
-      <Features />
+      <div id="features">
+        <Features />
+      </div>
       <CodePreview />
+      <ShaderPlayground onUniformsChange={() => {}} />
+      <div id="testimonials">
+        <Testimonials />
+      </div>
+      <div id="pricing">
+        <Pricing />
+      </div>
+      <Newsletter />
       <CtaSection />
       <Footer />
     </div>
