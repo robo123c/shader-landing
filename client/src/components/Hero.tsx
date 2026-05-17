@@ -1,7 +1,7 @@
 /**
- * Hero — "Obsidian Prism" design system
+ * Hero — "Obsidian Prism" design system with Three.js Shader Background
  *
- * Full-viewport hero section. The shader strip animation fills the background.
+ * Full-viewport hero section. The Three.js ripple shader fills the background.
  * Centered typographic monument: badge → headline → subheadline → CTAs.
  * Framer Motion staggered fade-up entrance on all text elements.
  * Orange (#fb923c) and Sky Blue (#38bdf8) are used as accent light sources.
@@ -9,18 +9,18 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Github } from "lucide-react";
-import ShaderBackground from "./ShaderBackground";
+import ShaderCanvas from "./ShaderCanvas";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-      transition: {
-        delay: i * 0.08,
-        duration: 0.65,
-        ease: "easeOut" as const,
-      },
+    transition: {
+      delay: i * 0.08,
+      duration: 0.65,
+      ease: "easeOut" as const,
+    },
   }),
 };
 
@@ -38,8 +38,19 @@ export default function Hero() {
         paddingTop: "60px", // navbar height
       }}
     >
-      {/* Shader animation background */}
-      <ShaderBackground />
+      {/* Three.js shader animation background */}
+      <ShaderCanvas />
+
+      {/* Overlay vignette to focus center */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(ellipse 80% 60% at 50% 50%, transparent 30%, rgba(0,0,0,0.5) 100%)",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
 
       {/* Content */}
       <div
@@ -64,7 +75,6 @@ export default function Hero() {
           style={{ marginBottom: "28px" }}
         >
           <span
-            className="badge-float"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -109,8 +119,9 @@ export default function Hero() {
             letterSpacing: "-0.04em",
             marginBottom: "24px",
             userSelect: "none",
+            color: "#ffffff",
+            textShadow: "0 4px 32px rgba(0,0,0,0.5)",
           }}
-          className="text-display-gradient"
         >
           Shader
           <br />
@@ -128,10 +139,11 @@ export default function Hero() {
             fontWeight: 400,
             fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
             lineHeight: 1.65,
-            color: "rgba(255,255,255,0.5)",
+            color: "rgba(255,255,255,0.7)",
             maxWidth: "520px",
             marginBottom: "40px",
             letterSpacing: "-0.01em",
+            textShadow: "0 2px 16px rgba(0,0,0,0.4)",
           }}
         >
           A high-performance WebGL shader toolkit for building immersive,
@@ -231,6 +243,7 @@ export default function Hero() {
                   fontSize: "20px",
                   color: "#ffffff",
                   letterSpacing: "-0.03em",
+                  textShadow: "0 2px 8px rgba(0,0,0,0.3)",
                 }}
               >
                 {stat.value}
