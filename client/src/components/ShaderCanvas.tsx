@@ -42,6 +42,7 @@ export default function ShaderCanvas() {
       precision highp float;
       uniform vec2 resolution;
       uniform float time;
+      uniform float isDarkMode;
 
       void main(void) {
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
@@ -59,6 +60,11 @@ export default function ShaderCanvas() {
           }
         }
         
+        // Invert colors for light mode
+        if(isDarkMode < 0.5) {
+          color = vec3(1.0) - color;
+        }
+        
         gl_FragColor = vec4(color[0], color[1], color[2], 1.0);
       }
     `;
@@ -73,6 +79,7 @@ export default function ShaderCanvas() {
     const uniforms = {
       time: { type: "f", value: 1.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
+      isDarkMode: { type: "f", value: isDark ? 1.0 : 0.0 },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -131,6 +138,9 @@ export default function ShaderCanvas() {
     
     animate(0);
 
+    // Update shader uniform for theme
+    uniforms.isDarkMode.value = isDark ? 1.0 : 0.0;
+
     // Store scene references for cleanup
     sceneRef.current = {
       camera,
@@ -159,7 +169,7 @@ export default function ShaderCanvas() {
         material.dispose();
       }
     };
-  }, []);
+  }, [isDark]);
 
   return (
     <div
