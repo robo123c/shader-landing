@@ -6,13 +6,27 @@ A production-grade React landing page featuring interactive Three.js shader anim
 
 ---
 
-## 🚀 One-Command Installation
+## 🚀 Quick Start
+
+### One-Command Installation (Recommended)
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/robo123c/shader-landing.git
+cd shader-landing
+
+# 2. Run the setup script
 ./setup.sh
+
+# 3. Start development
+pnpm dev
 ```
 
-This interactive script handles everything: installs dependencies, configures email service (Mailchimp/SendGrid), sets up analytics (Plausible/Fathom), initializes Git, and verifies the build. Your landing page is ready to go!
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
+
+**That's it!** The `./setup.sh` script handles everything: dependencies, email service, analytics, and verification.
+
+👉 **[Full Installation Guide →](./INSTALLATION.md)** for detailed step-by-step instructions, manual setup, troubleshooting, and configuration options.
 
 ---
 
@@ -54,23 +68,7 @@ This interactive script handles everything: installs dependencies, configures em
 
 ---
 
-## 🚀 Quick Start
 
-### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd shader-landing
-
-# Install dependencies
-pnpm install
-
-# Start dev server
-pnpm dev
-```
-
-Open `http://localhost:3000` in your browser.
 
 ### Build for Production
 
@@ -238,6 +236,10 @@ pnpm build
 
 ## 🐛 Troubleshooting
 
+For detailed troubleshooting, setup issues, and configuration help, see **[INSTALLATION.md](./INSTALLATION.md)**.
+
+Common issues:
+
 ### Dev Server Won't Start
 ```bash
 rm -rf node_modules pnpm-lock.yaml
@@ -252,9 +254,10 @@ pnpm format
 ```
 
 ### Shader Not Rendering
-- Check browser console for WebGL errors
-- Verify GPU support
-- Check Three.js version compatibility
+- Check browser console for WebGL errors (F12)
+- Verify GPU support: [webglreport.com](https://webglreport.com)
+- Try a different browser
+- Update graphics drivers
 
 ---
 
