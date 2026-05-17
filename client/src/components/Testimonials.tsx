@@ -8,6 +8,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const testimonials = [
   {
@@ -37,6 +38,8 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [current, setCurrent] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
 
@@ -99,7 +102,7 @@ export default function Testimonials() {
               fontSize: "clamp(2rem, 5vw, 3.25rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.04em",
-              color: "#ffffff",
+              color: isDark ? "#ffffff" : "#0a0a0a",
               maxWidth: "600px",
               margin: "0 auto",
             }}
@@ -124,8 +127,12 @@ export default function Testimonials() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
               style={{
-                background: "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: isDark
+                  ? "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)"
+                  : "linear-gradient(145deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.01) 100%)",
+                border: isDark
+                  ? "1px solid rgba(255,255,255,0.07)"
+                  : "1px solid rgba(0,0,0,0.1)",
                 borderRadius: "16px",
                 padding: "40px 32px",
                 textAlign: "center",
@@ -136,7 +143,7 @@ export default function Testimonials() {
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "1.125rem",
                   lineHeight: 1.7,
-                  color: "#ffffff",
+                  color: isDark ? "#ffffff" : "#0a0a0a",
                   marginBottom: "24px",
                   fontStyle: "italic",
                 }}
@@ -167,7 +174,7 @@ export default function Testimonials() {
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.9375rem",
                       fontWeight: 600,
-                      color: "#ffffff",
+                      color: isDark ? "#ffffff" : "#0a0a0a",
                       margin: "0",
                     }}
                   >
@@ -177,7 +184,7 @@ export default function Testimonials() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.8125rem",
-                      color: "rgba(255,255,255,0.55)",
+                      color: isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.55)",
                       margin: "4px 0 0 0",
                     }}
                   >

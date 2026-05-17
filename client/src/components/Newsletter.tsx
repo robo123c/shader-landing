@@ -8,8 +8,11 @@ import { motion } from "framer-motion";
 import { Mail, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Newsletter() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,9 +47,11 @@ export default function Newsletter() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       style={{
         padding: "80px 16px",
-        background: "linear-gradient(145deg, rgba(251,146,60,0.05) 0%, rgba(56,189,248,0.03) 100%)",
-        borderTop: "1px solid rgba(255,255,255,0.07)",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        background: isDark
+          ? "linear-gradient(145deg, rgba(251,146,60,0.05) 0%, rgba(56,189,248,0.03) 100%)"
+          : "linear-gradient(145deg, rgba(251,146,60,0.03) 0%, rgba(56,189,248,0.02) 100%)",
+        borderTop: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(0,0,0,0.1)",
+        borderBottom: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(0,0,0,0.1)",
       }}
     >
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
@@ -64,7 +69,7 @@ export default function Newsletter() {
               fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.04em",
-              color: "#ffffff",
+              color: isDark ? "#ffffff" : "#0a0a0a",
               margin: "0 0 16px 0",
             }}
           >
@@ -75,7 +80,7 @@ export default function Newsletter() {
               fontFamily: "'Inter', sans-serif",
               fontSize: "1.0625rem",
               lineHeight: 1.6,
-              color: "rgba(255,255,255,0.7)",
+              color: isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
             }}
           >
             Get the latest updates, shader techniques, and performance tips delivered to your inbox.
@@ -105,7 +110,7 @@ export default function Newsletter() {
           >
             <Mail
               size={18}
-              color="rgba(255,255,255,0.4)"
+              color={isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)"}
               style={{
                 position: "absolute",
                 left: "12px",
@@ -119,23 +124,23 @@ export default function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               style={{
                 width: "100%",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
+                border: isDark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)",
                 borderRadius: "8px",
                 padding: "12px 12px 12px 40px",
                 fontFamily: "'Inter', sans-serif",
                 fontSize: "0.9375rem",
-                color: "#ffffff",
+                color: isDark ? "#ffffff" : "#0a0a0a",
                 outline: "none",
                 transition: "all 160ms cubic-bezier(0.23, 1, 0.32, 1)",
               }}
               onFocus={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)";
+                e.currentTarget.style.borderColor = isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+                e.currentTarget.style.borderColor = isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)";
               }}
             />
           </div>
