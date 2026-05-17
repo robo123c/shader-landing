@@ -6,6 +6,16 @@ A production-grade React landing page featuring interactive Three.js shader anim
 
 ---
 
+## 🚀 One-Command Installation
+
+```bash
+./setup.sh
+```
+
+This interactive script handles everything: installs dependencies, configures email service (Mailchimp/SendGrid), sets up analytics (Plausible/Fathom), initializes Git, and verifies the build. Your landing page is ready to go!
+
+---
+
 ## ✨ Features
 
 ### 🎨 Visual Design
