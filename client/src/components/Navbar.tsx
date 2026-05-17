@@ -21,6 +21,10 @@ export default function Navbar() {
         right: 0,
         zIndex: 50,
         height: "60px",
+        background: "rgba(10, 10, 10, 0.5)",
+        backdropFilter: "blur(16px) saturate(180%)",
+        WebkitBackdropFilter: "blur(16px) saturate(180%)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
       }}
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
