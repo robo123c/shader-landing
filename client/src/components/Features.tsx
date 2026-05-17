@@ -1,7 +1,8 @@
 /**
- * Features — "Obsidian Prism" design system
+ * Features — "Obsidian Prism" design system with Shader Demos
  *
- * 3-column grid of dark feature cards. Each card has:
+ * 3-column grid of dark feature cards. Each card includes:
+ * - A miniature Three.js shader demo at the top
  * - An orange icon in a subtle glow container
  * - A bold condensed heading
  * - A muted body paragraph
@@ -17,37 +18,44 @@ import {
   Shield,
   BarChart3,
 } from "lucide-react";
+import ShaderDemo from "./ShaderDemo";
 
 const FEATURES = [
   {
     icon: Cpu,
     title: "GPU-Native Rendering",
     body: "Every animation runs directly on the GPU via WebGL 2.0. No canvas 2D fallbacks. Consistent 60fps across all modern browsers and devices.",
+    shaderType: "gpu-render" as const,
   },
   {
     icon: Layers,
     title: "Composable Shader Graph",
     body: "Build complex visual effects by chaining modular GLSL nodes. Mix, blend, and layer shaders like React components — declaratively.",
+    shaderType: "composable" as const,
   },
   {
     icon: Zap,
     title: "Sub-5ms Frame Budget",
     body: "Optimized draw calls, instanced geometry, and automatic LOD management keep your frame budget under 5ms even at 4K resolution.",
+    shaderType: "performance" as const,
   },
   {
     icon: Code2,
     title: "TypeScript-First API",
     body: "Full type safety from shader uniforms to animation timelines. Autocomplete for every GLSL variable, no runtime surprises.",
+    shaderType: "typescript" as const,
   },
   {
     icon: Shield,
     title: "Zero Runtime Dependencies",
     body: "The entire core is 14kB gzipped. No Three.js, no Babylon.js. Just a thin abstraction over raw WebGL that stays out of your way.",
+    shaderType: "zero-deps" as const,
   },
   {
     icon: BarChart3,
     title: "Built-in Profiler",
     body: "Integrated GPU timing queries expose per-pass render costs in the browser DevTools. Find bottlenecks before they reach production.",
+    shaderType: "profiler" as const,
   },
 ];
 
@@ -56,11 +64,11 @@ const cardVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-      transition: {
-        delay: i * 0.07,
-        duration: 0.6,
-        ease: "easeOut" as const,
-      },
+    transition: {
+      delay: i * 0.07,
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
   }),
 };
 
@@ -148,12 +156,28 @@ export default function Features() {
                 className="feature-card"
                 style={{
                   borderRadius: "12px",
-                  padding: "28px",
+                  padding: "20px",
                   display: "flex",
                   flexDirection: "column",
                   gap: "16px",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
+                {/* Shader demo at top */}
+                <div
+                  style={{
+                    marginLeft: "-20px",
+                    marginRight: "-20px",
+                    marginTop: "-20px",
+                    marginBottom: "8px",
+                    borderRadius: "12px 12px 0 0",
+                    overflow: "hidden",
+                  }}
+                >
+                  <ShaderDemo type={feature.shaderType} width={280} height={120} />
+                </div>
+
                 {/* Icon container */}
                 <div
                   style={{
