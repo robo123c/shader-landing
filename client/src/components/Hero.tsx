@@ -195,7 +195,10 @@ export default function Hero() {
           </button>
 
           {/* Secondary CTA */}
-          <button
+          <a
+            href="https://github.com/robo123c/shader-landing"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-dark-border"
             style={{
               display: "inline-flex",
@@ -208,11 +211,12 @@ export default function Hero() {
               fontSize: "15px",
               color: "rgba(255,255,255,0.75)",
               letterSpacing: "-0.02em",
+              textDecoration: "none"
             }}
           >
             <Github size={16} strokeWidth={1.75} />
             View Code
-          </button>
+          </a>
         </motion.div>
 
         {/* Social proof */}
