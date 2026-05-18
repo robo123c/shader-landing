@@ -74,49 +74,50 @@ export default function Navbar() {
         </div>
 
         {/* Nav links */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "32px",
-          }}
-          className="hidden md:flex"
-        >
+        {!isMobile && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "32px",
+            }}
+          >
           {[
             { label: "Features", href: "#features" },
             { label: "Pricing", href: "#pricing" },
             { label: "Testimonials", href: "#testimonials" },
-          ].map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 400,
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.55)",
-                textDecoration: "none",
-                transition: "color 160ms ease",
-                letterSpacing: "-0.01em",
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                const target = document.querySelector(item.href);
-                if (target) {
-                  target.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)";
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  color: "rgba(255,255,255,0.55)",
+                  textDecoration: "none",
+                  transition: "color 160ms ease",
+                  letterSpacing: "-0.01em",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const target = document.querySelector(item.href);
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)";
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        )}
 
         {/* Right actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
