@@ -37,7 +37,7 @@ export default function ShaderCanvas() {
 
     // Fragment shader — "Liquid Glass" refraction effect
     const fragmentShader = `
-      precision highp float;
+      precision mediump float;
       uniform vec2 resolution;
       uniform float time;
       uniform vec2 mouse;
@@ -210,8 +210,6 @@ export default function ShaderCanvas() {
         lastFrameTime = currentTime;
       }
     };
-    
-    animate(0);
 
     // Store scene references for cleanup
     sceneRef.current = {
@@ -223,7 +221,7 @@ export default function ShaderCanvas() {
     };
 
     // Start animation
-    animate(performance.now());
+    animationId = requestAnimationFrame(animate);
 
     // Cleanup function
     return () => {
