@@ -165,13 +165,11 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="mobile-menu-glass"
             style={{
               position: "fixed",
               inset: 0,
               top: "60px",
-              background: "rgba(10, 10, 10, 0.85)",
-              backdropFilter: "blur(32px) saturate(180%)",
-              WebkitBackdropFilter: "blur(32px) saturate(180%)",
               zIndex: 100,
               display: "flex",
               flexDirection: "column",
