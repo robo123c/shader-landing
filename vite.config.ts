@@ -203,7 +203,14 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [
+  react(),
+  tailwindcss(),
+  process.env.NODE_ENV !== "production" && jsxLocPlugin(),
+  process.env.NODE_ENV !== "production" && vitePluginManusRuntime(),
+  process.env.NODE_ENV !== "production" && vitePluginManusDebugCollector(),
+  process.env.NODE_ENV !== "production" && vitePluginStorageProxy(),
+].filter(Boolean);
 
 export default defineConfig({
   plugins,
@@ -219,6 +226,24 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-three': ['three'],
+          'vendor-framer': ['framer-motion'],
+          'vendor-ui': ['@radix-ui/react-accordion', '@radix-ui/react-dialog', 'lucide-react'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
   server: {
     port: 3000,
