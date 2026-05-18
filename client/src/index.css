@@ -273,19 +273,15 @@
 
   /* Mobile Menu Glassmorphism */
   .mobile-menu-glass {
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    /* Use a very high opacity background as the primary to ensure readability */
+    background-color: rgba(10, 10, 10, 0.98) !important;
+    /* Attempt blur but don't rely on it for readability */
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     /* Hardware acceleration */
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-  }
-
-  /* Fallback for browsers that don't support backdrop-filter */
-  @supports not (backdrop-filter: blur(10px)) {
-    .mobile-menu-glass {
-      background: rgba(10, 10, 10, 0.98);
-    }
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 
   /* Feature card */
