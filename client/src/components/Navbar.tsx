@@ -37,7 +37,7 @@ export default function Navbar() {
         style={{
           maxWidth: "1280px",
           margin: "0 auto",
-          padding: "0 2rem",
+          padding: isMobile ? "0 1.25rem" : "0 2rem",
           height: "100%",
           display: "flex",
           alignItems: "center",
@@ -45,11 +45,11 @@ export default function Navbar() {
         }}
       >
         {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "6px" : "8px" }}>
           <div
             style={{
-              width: "28px",
-              height: "28px",
+              width: isMobile ? "24px" : "28px",
+              height: isMobile ? "24px" : "28px",
               background: "linear-gradient(135deg, #fb923c 0%, #f97316 100%)",
               borderRadius: "6px",
               display: "flex",
@@ -58,13 +58,13 @@ export default function Navbar() {
               boxShadow: "0 0 12px rgba(251,146,60,0.4)",
             }}
           >
-            <Zap size={14} color="#0a0a0a" strokeWidth={2.5} />
+            <Zap size={isMobile ? 12 : 14} color="#0a0a0a" strokeWidth={2.5} />
           </div>
           <span
             style={{
               fontFamily: "'Geist', 'Inter', sans-serif",
               fontWeight: 700,
-              fontSize: "15px",
+              fontSize: isMobile ? "14px" : "15px",
               color: "#ffffff",
               letterSpacing: "-0.03em",
             }}
