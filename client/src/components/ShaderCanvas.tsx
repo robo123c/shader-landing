@@ -35,87 +35,47 @@ export default function ShaderCanvas() {
       }
     `;
 
-    // Fragment shader — "Liquid Glass" refraction effect
+    // Fragment shader — ripple effect with color gradients and mouse interaction
     const fragmentShader = `
+      #define TWO_PI 6.2831853072
+      #define PI 3.14159265359
+
       precision highp float;
       uniform vec2 resolution;
       uniform float time;
       uniform vec2 mouse;
 
-      // Simplex noise for organic movement
-      vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
-      float snoise(vec2 v){
-        const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                 -0.577350269189626, 0.024390243902439);
-        vec2 i  = floor(v + dot(v, C.yy) );
-        vec2 x0 = v -   i + dot(i, C.xx);
-        vec2 i1;
-        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-        vec4 x12 = x0.xyxy + C.xxzz;
-        x12.xy -= i1;
-        i = mod(i, 289.0);
-        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
-        + i.x + vec3(0.0, i1.x, 1.0 ));
-        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
-          dot(x12.zw,x12.zw)), 0.0);
-        m = m*m ;
-        m = m*m ;
-        vec3 x = 2.0 * fract(p * C.www) - 1.0;
-        vec3 h = abs(x) - 0.5;
-        vec3 a0 = x - floor(x + 0.5);
-        vec3 g = a0 * vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw));
-        float n = 130.0 * dot(m, g);
-        return n;
-      }
-
       void main(void) {
-        vec2 uv = gl_FragCoord.xy / resolution.xy;
-        vec2 p = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+        vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
         
         // Mouse influence
         vec2 m = (mouse * 2.0 - 1.0);
-        m.y *= -1.0;
-        float distToMouse = length(p - m);
-        float mouseInfluence = smoothstep(1.2, 0.0, distToMouse);
+        m.y *= -1.0; // flip y
+        float distToMouse = length(uv - m);
+        float mouseInfluence = smoothstep(0.8, 0.0, distToMouse);
+        
+        float t = time * 0.05;
+        float lineWidth = 0.002;
 
-        // Organic "Liquid" movement
-        float t = time * 0.3;
-        float noise = snoise(p * 0.8 + t * 0.2);
+        vec3 color = vec3(0.0);
+        for(int j = 0; j < 3; j++){
+          for(int i = 0; i < 5; i++){
+            float ripple = fract(t - 0.01 * float(j) + float(i) * 0.01) * 5.0;
+            // Apply mouse influence to the ripple
+            ripple -= mouseInfluence * 0.2;
+            
+            color[j] += lineWidth * float(i * i) / abs(
+              ripple - 
+              length(uv) + 
+              mod(uv.x + uv.y, 0.2)
+            );
+          }
+        }
         
-        // Refraction / Distortion map
-        vec2 distortion = vec2(
-          snoise(p * 1.5 + t * 0.1 + noise),
-          snoise(p * 1.5 - t * 0.1 + noise)
-        ) * 0.1;
+        // Subtle glow around mouse
+        color += vec3(0.1, 0.05, 0.0) * mouseInfluence * 0.5;
         
-        // Add mouse distortion
-        distortion += (p - m) * mouseInfluence * 0.15;
-        
-        // Chromatic Aberration (RGB shift)
-        float r = snoise(p + distortion * 1.1 + t * 0.05);
-        float g = snoise(p + distortion * 1.0 + t * 0.05);
-        float b = snoise(p + distortion * 0.9 + t * 0.05);
-        
-        // Apple-style color palette (Deep Oranges, Pinks, Purples)
-        vec3 color1 = vec3(0.98, 0.57, 0.24); // Orange
-        vec3 color2 = vec3(0.92, 0.31, 0.51); // Pink
-        vec3 color3 = vec3(0.42, 0.24, 0.82); // Purple
-        
-        vec3 finalColor = mix(color1, color2, r);
-        finalColor = mix(finalColor, color3, g * 0.5 + b * 0.5);
-        
-        // Liquid glass highlights
-        float highlight = smoothstep(0.4, 0.5, noise) * 0.15;
-        finalColor += highlight;
-        
-        // Darken for background use
-        finalColor *= 0.15;
-        
-        // Vignette
-        float vignette = smoothstep(1.5, 0.5, length(p));
-        finalColor *= vignette;
-
-        gl_FragColor = vec4(finalColor, 1.0);
+        gl_FragColor = vec4(color[0], color[1], color[2], 1.0);
       }
     `;
 
