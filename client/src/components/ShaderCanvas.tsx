@@ -8,9 +8,11 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useIsMobile } from "@/hooks/useMobile";
 
 
 export default function ShaderCanvas() {
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
     camera: THREE.Camera;
@@ -85,13 +87,16 @@ export default function ShaderCanvas() {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // Optimize pixel ratio for performance
-    const pixelRatio = Math.min(window.devicePixelRatio, 2);
+    // Optimize pixel ratio for performance - lower on mobile
+    const pixelRatio = isMobile 
+      ? Math.min(window.devicePixelRatio, 1.2) 
+      : Math.min(window.devicePixelRatio, 2);
+      
     const renderer = new THREE.WebGLRenderer({ 
       antialias: false,
       alpha: false,
       powerPreference: "high-performance",
-      precision: "mediump"
+      precision: isMobile ? "lowp" : "mediump"
     });
     renderer.setPixelRatio(pixelRatio);
 

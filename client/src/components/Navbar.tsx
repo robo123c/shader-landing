@@ -6,10 +6,14 @@
  * Framer Motion fade-down entrance on mount.
  */
 
-import { motion } from "framer-motion";
-import { Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Zap, Menu, X } from "lucide-react";
+import { useState } from "react";
+import { useIsMobile } from "@/hooks/useMobile";
 
 export default function Navbar() {
+  const isMobile = useIsMobile();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <motion.nav
       className="glass-nav"
@@ -116,24 +120,99 @@ export default function Navbar() {
 
         {/* Right actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <button
-            className="btn-orange-glow"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 600,
-              fontSize: "13px",
-              color: "#0a0a0a",
-              padding: "7px 16px",
-              borderRadius: "6px",
-              border: "none",
-              letterSpacing: "-0.01em",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Get Started
-          </button>
+          {!isMobile && (
+            <button
+              className="btn-orange-glow"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 600,
+                fontSize: "13px",
+                color: "#0a0a0a",
+                padding: "7px 16px",
+                borderRadius: "6px",
+                border: "none",
+                letterSpacing: "-0.01em",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Get Started
+            </button>
+          )}
+          
+          {isMobile && (
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                cursor: "pointer",
+                padding: "4px"
+              }}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobile && isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            style={{
+              background: "rgba(10, 10, 10, 0.95)",
+              backdropFilter: "blur(16px)",
+              borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+              overflow: "hidden"
+            }}
+          >
+            <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              {[
+                { label: "Features", href: "#features" },
+                { label: "Pricing", href: "#pricing" },
+                { label: "Testimonials", href: "#testimonials" },
+              ].map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsMenuOpen(false);
+                    const target = document.querySelector(item.href);
+                    if (target) {
+                      target.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "18px",
+                    color: "rgba(255,255,255,0.7)",
+                    textDecoration: "none"
+                  }}
+                >
+                  {item.label}
+                </a>
+              ))}
+              <button
+                className="btn-orange-glow"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  border: "none",
+                  fontWeight: 600
+                }}
+              >
+                Get Started
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }

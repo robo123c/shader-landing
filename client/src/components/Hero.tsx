@@ -10,6 +10,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Github } from "lucide-react";
 import { lazy, Suspense } from "react";
+import { useIsMobile } from "@/hooks/useMobile";
 
 const ShaderCanvas = lazy(() => import("./ShaderCanvas"));
 
@@ -27,17 +28,20 @@ const fadeUp = {
 };
 
 export default function Hero() {
+  const isMobile = useIsMobile();
+  
   return (
     <section
       style={{
         position: "relative",
-        minHeight: "100vh",
+        minHeight: isMobile ? "auto" : "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        paddingTop: "60px", // navbar height
+        paddingTop: isMobile ? "120px" : "60px",
+        paddingBottom: isMobile ? "80px" : "0",
       }}
     >
       {/* Three.js shader animation background */}
