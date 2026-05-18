@@ -140,11 +140,112 @@ export default function Navbar() {
             </button>
           )}
           
-
+          {isMobile && (
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                cursor: "pointer",
+                padding: "4px"
+              }}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          )}
         </div>
       </div>
 
-
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobile && isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="mobile-menu-glass"
+            style={{
+              position: "fixed",
+              inset: 0,
+              top: "60px",
+              zIndex: 100,
+              display: "flex",
+              flexDirection: "column",
+              padding: "2rem",
+              paddingTop: "4rem"
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+              {[
+                { label: "Features", href: "#features" },
+                { label: "Pricing", href: "#pricing" },
+                { label: "Testimonials", href: "#testimonials" },
+                { label: "Github", href: "https://github.com/robo123c/shader-landing" },
+              ].map((item, i) => (
+                <motion.a
+                  key={item.label}
+                  href={item.href}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={(e) => {
+                    if (item.href.startsWith("#")) {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      const target = document.querySelector(item.href);
+                      if (target) {
+                        target.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }
+                  }}
+                  style={{
+                    fontFamily: "'Geist', 'Inter', sans-serif",
+                    fontSize: "32px",
+                    fontWeight: 700,
+                    color: "white",
+                    textDecoration: "none",
+                    letterSpacing: "-0.04em"
+                  }}
+                >
+                  {item.label}
+                </motion.a>
+              ))}
+            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              style={{ marginTop: "auto", paddingBottom: "2rem" }}
+            >
+              <button
+                className="btn-orange-glow"
+                style={{
+                  width: "100%",
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "none",
+                  fontWeight: 700,
+                  fontSize: "18px",
+                  color: "#0a0a0a"
+                }}
+              >
+                Get Started Free
+              </button>
+              <p style={{ 
+                textAlign: "center", 
+                marginTop: "1.5rem", 
+                color: "rgba(255,255,255,0.3)",
+                fontSize: "14px"
+              }}>
+                © 2026 ShaderKit. All rights reserved.
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }
