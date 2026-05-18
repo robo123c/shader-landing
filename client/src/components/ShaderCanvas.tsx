@@ -21,6 +21,7 @@ export default function ShaderCanvas() {
     uniforms: any;
     animationId: number;
   } | null>(null);
+  const mouseRef = useRef({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -34,7 +35,7 @@ export default function ShaderCanvas() {
       }
     `;
 
-    // Fragment shader — ripple effect with color gradients
+    // Fragment shader — ripple effect with color gradients and mouse interaction
     const fragmentShader = `
       #define TWO_PI 6.2831853072
       #define PI 3.14159265359
@@ -42,24 +43,37 @@ export default function ShaderCanvas() {
       precision highp float;
       uniform vec2 resolution;
       uniform float time;
-
+      uniform vec2 mouse;
 
       void main(void) {
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+        
+        // Mouse influence
+        vec2 m = (mouse * 2.0 - 1.0);
+        m.y *= -1.0; // flip y
+        float distToMouse = length(uv - m);
+        float mouseInfluence = smoothstep(0.8, 0.0, distToMouse);
+        
         float t = time * 0.05;
         float lineWidth = 0.002;
 
         vec3 color = vec3(0.0);
         for(int j = 0; j < 3; j++){
           for(int i = 0; i < 5; i++){
+            float ripple = fract(t - 0.01 * float(j) + float(i) * 0.01) * 5.0;
+            // Apply mouse influence to the ripple
+            ripple -= mouseInfluence * 0.2;
+            
             color[j] += lineWidth * float(i * i) / abs(
-              fract(t - 0.01 * float(j) + float(i) * 0.01) * 5.0 - 
+              ripple - 
               length(uv) + 
               mod(uv.x + uv.y, 0.2)
             );
           }
         }
         
+        // Subtle glow around mouse
+        color += vec3(0.1, 0.05, 0.0) * mouseInfluence * 0.5;
         
         gl_FragColor = vec4(color[0], color[1], color[2], 1.0);
       }
@@ -75,7 +89,7 @@ export default function ShaderCanvas() {
     const uniforms = {
       time: { type: "f", value: 1.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
-
+      mouse: { type: "v2", value: new THREE.Vector2(0.5, 0.5) },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -119,6 +133,23 @@ export default function ShaderCanvas() {
     onWindowResize();
     window.addEventListener("resize", onWindowResize, false);
 
+    // Mouse move handler
+    const onMouseMove = (e: MouseEvent) => {
+      mouseRef.current.x = e.clientX / window.innerWidth;
+      mouseRef.current.y = e.clientY / window.innerHeight;
+    };
+    
+    // Touch move handler
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouseRef.current.x = e.touches[0].clientX / window.innerWidth;
+        mouseRef.current.y = e.touches[0].clientY / window.innerHeight;
+      }
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove);
+
     // Animation loop with frame rate throttling
     let animationId = 0;
     let lastFrameTime = 0;
@@ -130,6 +161,11 @@ export default function ShaderCanvas() {
       // Throttle to 60 FPS
       if (currentTime - lastFrameTime >= targetFrameTime) {
         uniforms.time.value += 0.016;
+        
+        // Smoothly update mouse uniforms
+        uniforms.mouse.value.x += (mouseRef.current.x - uniforms.mouse.value.x) * 0.1;
+        uniforms.mouse.value.y += (mouseRef.current.y - uniforms.mouse.value.y) * 0.1;
+        
         renderer.render(scene, camera);
         lastFrameTime = currentTime;
       }
@@ -152,6 +188,8 @@ export default function ShaderCanvas() {
     // Cleanup function
     return () => {
       window.removeEventListener("resize", onWindowResize);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
 
       if (sceneRef.current) {
         cancelAnimationFrame(animationId);

@@ -16,6 +16,19 @@ import ShaderPlayground from "@/components/ShaderPlayground";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import Newsletter from "@/components/Newsletter";
+import { motion } from "framer-motion";
+
+const SectionWrapper = ({ children, id }: { children: React.ReactNode; id?: string }) => (
+  <motion.div
+    id={id}
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default function Home() {
   return (
@@ -28,20 +41,30 @@ export default function Home() {
     >
       <Navbar />
       <Hero />
-      <TrustBar />
-      <div id="features">
+      <SectionWrapper>
+        <TrustBar />
+      </SectionWrapper>
+      <SectionWrapper id="features">
         <Features />
-      </div>
-      <CodePreview />
-      <ShaderPlayground onUniformsChange={() => {}} />
-      <div id="testimonials">
+      </SectionWrapper>
+      <SectionWrapper>
+        <CodePreview />
+      </SectionWrapper>
+      <SectionWrapper>
+        <ShaderPlayground onUniformsChange={() => {}} />
+      </SectionWrapper>
+      <SectionWrapper id="testimonials">
         <Testimonials />
-      </div>
-      <div id="pricing">
+      </SectionWrapper>
+      <SectionWrapper id="pricing">
         <Pricing />
-      </div>
-      <Newsletter />
-      <CtaSection />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Newsletter />
+      </SectionWrapper>
+      <SectionWrapper>
+        <CtaSection />
+      </SectionWrapper>
       <Footer />
     </div>
   );

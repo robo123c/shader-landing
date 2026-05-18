@@ -160,56 +160,89 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobile && isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
             style={{
-              background: "rgba(10, 10, 10, 0.95)",
-              backdropFilter: "blur(16px)",
-              borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
-              overflow: "hidden"
+              position: "fixed",
+              inset: 0,
+              top: "60px",
+              background: "rgba(10, 10, 10, 0.98)",
+              backdropFilter: "blur(24px)",
+              zIndex: 100,
+              display: "flex",
+              flexDirection: "column",
+              padding: "2rem",
+              paddingTop: "4rem"
             }}
           >
-            <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
               {[
                 { label: "Features", href: "#features" },
                 { label: "Pricing", href: "#pricing" },
                 { label: "Testimonials", href: "#testimonials" },
-              ].map((item) => (
-                <a
+                { label: "Github", href: "https://github.com/robo123c/shader-landing" },
+              ].map((item, i) => (
+                <motion.a
                   key={item.label}
                   href={item.href}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
                   onClick={(e) => {
-                    e.preventDefault();
-                    setIsMenuOpen(false);
-                    const target = document.querySelector(item.href);
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
+                    if (item.href.startsWith("#")) {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      const target = document.querySelector(item.href);
+                      if (target) {
+                        target.scrollIntoView({ behavior: "smooth" });
+                      }
                     }
                   }}
                   style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "18px",
-                    color: "rgba(255,255,255,0.7)",
-                    textDecoration: "none"
+                    fontFamily: "'Geist', 'Inter', sans-serif",
+                    fontSize: "32px",
+                    fontWeight: 700,
+                    color: "white",
+                    textDecoration: "none",
+                    letterSpacing: "-0.04em"
                   }}
                 >
                   {item.label}
-                </a>
+                </motion.a>
               ))}
+            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              style={{ marginTop: "auto", paddingBottom: "2rem" }}
+            >
               <button
                 className="btn-orange-glow"
                 style={{
                   width: "100%",
-                  padding: "12px",
-                  borderRadius: "8px",
+                  padding: "16px",
+                  borderRadius: "12px",
                   border: "none",
-                  fontWeight: 600
+                  fontWeight: 700,
+                  fontSize: "18px",
+                  color: "#0a0a0a"
                 }}
               >
-                Get Started
+                Get Started Free
               </button>
-            </div>
+              <p style={{ 
+                textAlign: "center", 
+                marginTop: "1.5rem", 
+                color: "rgba(255,255,255,0.3)",
+                fontSize: "14px"
+              }}>
+                © 2026 ShaderKit. All rights reserved.
+              </p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
