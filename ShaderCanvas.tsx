@@ -66,8 +66,7 @@ export default function ShaderCanvas() {
             
             color[j] += lineWidth * float(i * i) / abs(
               ripple - 
-              length(uv) + 
-              mod(uv.x + uv.y, 0.2)
+              length(uv)
             );
           }
         }

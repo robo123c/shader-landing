@@ -10,6 +10,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Github } from "lucide-react";
 import { lazy, Suspense } from "react";
+import { useIsMobile } from "@/hooks/useMobile";
 
 const ShaderCanvas = lazy(() => import("./ShaderCanvas"));
 
@@ -27,17 +28,20 @@ const fadeUp = {
 };
 
 export default function Hero() {
+  const isMobile = useIsMobile();
+  
   return (
     <section
       style={{
         position: "relative",
-        minHeight: "100vh",
+        minHeight: isMobile ? "auto" : "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        paddingTop: "60px", // navbar height
+        paddingTop: isMobile ? "120px" : "60px",
+        paddingBottom: isMobile ? "80px" : "0",
       }}
     >
       {/* Three.js shader animation background */}
@@ -191,7 +195,10 @@ export default function Hero() {
           </button>
 
           {/* Secondary CTA */}
-          <button
+          <a
+            href="https://github.com/robo123c/shader-landing"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-dark-border"
             style={{
               display: "inline-flex",
@@ -204,11 +211,12 @@ export default function Hero() {
               fontSize: "15px",
               color: "rgba(255,255,255,0.75)",
               letterSpacing: "-0.02em",
+              textDecoration: "none"
             }}
           >
             <Github size={16} strokeWidth={1.75} />
             View Code
-          </button>
+          </a>
         </motion.div>
 
         {/* Social proof */}

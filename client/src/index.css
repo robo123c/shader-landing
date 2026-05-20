@@ -271,6 +271,19 @@
     transform: scale(0.97);
   }
 
+  /* Mobile Menu Glassmorphism */
+  .mobile-menu-glass {
+    /* Use a very high opacity background as the primary to ensure readability */
+    background-color: rgba(10, 10, 10, 0.98) !important;
+    /* Attempt blur but don't rely on it for readability */
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    /* Hardware acceleration */
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
   /* Feature card */
   .feature-card {
     background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
